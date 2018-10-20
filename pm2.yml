@@ -1,0 +1,7 @@
+apps:
+  - script   : index.js
+    name: 'LIGHTS'
+    instances: 1
+    watch  : true
+    env    :
+      NODE_ENV: production
