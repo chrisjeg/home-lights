@@ -17,7 +17,19 @@ const pixelData = new Uint32Array(NUM_LEDS);
 
 ws.on('open', () => setInterval(() => ws.send(JSON.stringify({ type: "KEEP-ALIVE" })), 5000));
 
+let animation = value => value;
+
 ws281x.init(NUM_LEDS);
+
+let frame = 0;
+setInterval(()=>{
+    frame = (frame + 1) % 500;
+    pixelData.forEach((value,index,array)=>{
+        pixelData[index] = animation(value,index,array);
+    });
+    ws281x.render(pixelData);
+},20);
+
 ws.on('message', data => {
     const message = JSON.parse(data);
     console.log("UPDATING")
@@ -26,7 +38,11 @@ ws.on('message', data => {
             pixelData.forEach((_, i) => {
                 pixelData[i] = message.colour;
             });
-            ws281x.render(pixelData);
+            animation = x => x;
+        case "SET_CHRISTMAS":
+            pixelData.forEach((_,i) => {
+                pixelData[i] = i % 2 ? 16711680 : 65280;
+            });
         default:
             break;
     }
