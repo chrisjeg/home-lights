@@ -39,10 +39,12 @@ ws.on('message', data => {
                 pixelData[i] = message.colour;
             });
             animation = x => x;
+            break;
         case "SET_CHRISTMAS":
             pixelData.forEach((_,i) => {
-                pixelData[i] = i % 2 ? 16711680 : 65280;
+                pixelData[i] = Math.ceil(i/3) % 2 ? 16711680 : 65280;
             });
+            break;
         default:
             break;
     }
