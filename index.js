@@ -25,7 +25,7 @@ let frame = 0;
 setInterval(()=>{
     frame = (frame + 1) % 500;
     pixelData.forEach((value,index,array)=>{
-        pixelData[index] = animation(value,index,array);
+        pixelData[index] = animation(value,index,array,frame);
     });
     ws281x.render(pixelData);
 },20);
@@ -41,9 +41,11 @@ ws.on('message', data => {
             animation = x => x;
             break;
         case "SET_CHRISTMAS":
-            pixelData.forEach((_,i) => {
-                pixelData[i] = Math.ceil(i/3) % 2 ? 16711680 : 65280;
-            });
+            animation = (_,i,_,f) => {
+                const offset = Math.floor(f / 50);
+                const index = (i + offset) % NUM_LEDS;
+                return Math.ceil(index/3) % 2 ? 16711680 : 65280;
+            }
             break;
         default:
             break;
