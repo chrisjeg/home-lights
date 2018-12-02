@@ -41,10 +41,16 @@ ws.on('message', data => {
             animation = x => x;
             break;
         case "SET_CHRISTMAS":
+            pixelData.forEach((_, i) => {
+                pixelData[i] = Math.ceil(i/3) % 2 ? 16711680 : 65280;
+            });
             animation = (_,i,a,f) => {
-                const offset = Math.floor(f / 50);
-                const index = (i + offset) % NUM_LEDS;
-                return Math.ceil(index/3) % 2 ? 16711680 : 65280;
+                const isNextFrame = !(f % 50);
+                if(isNextFrame){
+                    return array[(i+1) % NUM_LEDS]
+                } else {
+                    return array[i];
+                }
             }
             break;
         default:
