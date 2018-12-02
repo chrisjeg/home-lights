@@ -44,7 +44,7 @@ ws.on('message', data => {
             pixelData.forEach((_, i) => {
                 pixelData[i] = Math.ceil(i/3) % 2 ? 16711680 : 65280;
             });
-            animation = (_,i,a,f) => {
+            animation = (_,i,array,f) => {
                 const isNextFrame = !(f % 50);
                 if(isNextFrame){
                     return array[(i+1) % NUM_LEDS]
