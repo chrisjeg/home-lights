@@ -41,7 +41,7 @@ ws.on('message', data => {
             animation = x => x;
             break;
         case "SET_CHRISTMAS":
-            animation = (_,i,_,f) => {
+            animation = (_,i,a,f) => {
                 const offset = Math.floor(f / 50);
                 const index = (i + offset) % NUM_LEDS;
                 return Math.ceil(index/3) % 2 ? 16711680 : 65280;
